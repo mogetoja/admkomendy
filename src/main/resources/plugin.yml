@@ -1,0 +1,37 @@
+name: AdmKomendy
+version: 1.0.0
+main: pl.admkomendy.AdmKomendy
+api-version: "1.21"
+author: you
+description: Proste komendy /tp, /gm, /fly i /flyspeed
+
+commands:
+  tp:
+    description: Teleportuje do gracza lub na koordynaty
+    usage: /tp <nick> | /tp <nick> <nick2> | /tp <x> <y> <z> | /tp <nick> <x> <y> <z>
+    permission: admkomendy.tp
+  gm:
+    description: Zmienia tryb gry (0-3)
+    usage: /gm <0|1|2|3> [nick]
+    permission: admkomendy.gm
+  fly:
+    description: Wlacza lub wylacza latanie
+    usage: /fly [nick]
+    permission: admkomendy.fly
+  flyspeed:
+    description: Ustawia predkosc latania (1-10)
+    usage: /flyspeed <1-10>
+    permission: admkomendy.flyspeed
+
+permissions:
+  admkomendy.tp:
+    default: op
+  admkomendy.gm:
+    default: op
+  admkomendy.fly:
+    default: op
+  admkomendy.flyspeed:
+    default: op
+  admkomendy.others:
+    description: Pozwala uzywac /gm i /fly na innych graczach
+    default: op
