@@ -1,6 +1,6 @@
-name: AdmKomendy
+name: Komendy
 version: 1.0.0
-main: pl.admkomendy.AdmKomendy
+main: pl.komendy.Komendy
 api-version: "1.21"
 author: you
 description: Proste komendy /tp, /gm, /fly i /flyspeed
@@ -9,67 +9,67 @@ commands:
   tp:
     description: Teleportuje do gracza lub na koordynaty
     usage: /tp <nick> | /tp <nick> <nick2> | /tp <x> <y> <z> | /tp <nick> <x> <y> <z>
-    permission: admkomendy.tp
+    permission: komendy.tp
   gm:
     description: Zmienia tryb gry (0-3)
     usage: /gm <0|1|2|3> [nick]
-    permission: admkomendy.gm
+    permission: komendy.gm
   fly:
     description: Wlacza lub wylacza latanie
     usage: /fly [nick]
-    permission: admkomendy.fly
+    permission: komendy.fly
   flyspeed:
     description: Ustawia predkosc latania (1-10)
     usage: /flyspeed <1-10>
-    permission: admkomendy.flyspeed
+    permission: komendy.flyspeed
   ban:
     description: Banuje gracza na stale
     usage: /ban <nick> [powod]
-    permission: admkomendy.ban
+    permission: komendy.ban
   tempban:
     description: Banuje gracza na czas
     usage: /tempban <nick> <czas> [powod]
-    permission: admkomendy.ban
+    permission: komendy.ban
   tempbanip:
     description: Banuje adres IP na czas
     usage: /tempbanip <nick|ip> <czas> [powod]
-    permission: admkomendy.ban
+    permission: komendy.ban
   unban:
     description: Zdejmuje bana (nick lub IP)
     usage: /unban <nick|ip>
-    permission: admkomendy.ban
+    permission: komendy.ban
   mute:
     description: Wycisza gracza na stale
     usage: /mute <nick> [powod]
-    permission: admkomendy.mute
+    permission: komendy.mute
   tempmute:
     description: Wycisza gracza na czas
     usage: /tempmute <nick> <czas> [powod]
-    permission: admkomendy.mute
+    permission: komendy.mute
   tempmuteip:
     description: Wycisza adres IP na czas
     usage: /tempmuteip <nick|ip> <czas> [powod]
-    permission: admkomendy.mute
+    permission: komendy.mute
   unmute:
     description: Zdejmuje wyciszenie (nick lub IP)
     usage: /unmute <nick|ip>
-    permission: admkomendy.mute
+    permission: komendy.mute
 
 permissions:
-  admkomendy.ban:
+  komendy.ban:
     description: Uzywanie /ban, /tempban, /tempbanip i /unban
     default: op
-  admkomendy.mute:
+  komendy.mute:
     description: Uzywanie /mute, /tempmute, /tempmuteip i /unmute
     default: op
-  admkomendy.tp:
+  komendy.tp:
     default: op
-  admkomendy.gm:
+  komendy.gm:
     default: op
-  admkomendy.fly:
+  komendy.fly:
     default: op
-  admkomendy.flyspeed:
+  komendy.flyspeed:
     default: op
-  admkomendy.others:
+  komendy.others:
     description: Pozwala uzywac /gm i /fly na innych graczach
     default: op

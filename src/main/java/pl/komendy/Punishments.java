@@ -1,4 +1,4 @@
-package pl.admkomendy;
+package pl.komendy;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

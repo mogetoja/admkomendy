@@ -1,4 +1,4 @@
-# AdmKomendy
+# Komendy
 
 Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunikatami na czacie.
 
@@ -23,14 +23,14 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 | `/unmute <nick\|ip>` | zdjęcie wyciszenia |
 
 Czas podajesz jako `30m`, `2h`, `7d`, `1d12h` (jednostki: `s` `m` `h` `d` `w`, maksymalnie 10 lat).
-Kary zapisują się w `plugins/AdmKomendy/punishments.yml` i przetrwają restart serwera.
+Kary zapisują się w `plugins/Komendy/punishments.yml` i przetrwają restart serwera.
 Wyciszony gracz nie może pisać na czacie ani używać `/msg`, `/tell`, `/w`, `/r`, `/me`, `/say`.
 
 ## Uprawnienia
 
-`admkomendy.tp`, `admkomendy.gm`, `admkomendy.fly`, `admkomendy.flyspeed`, `admkomendy.ban`
-(wszystkie bany i `/unban`), `admkomendy.mute` (wszystkie wyciszenia i `/unmute`) oraz
-`admkomendy.others` (używanie `/gm` i `/fly` na innych graczach). Domyślnie dla OP.
+`komendy.tp`, `komendy.gm`, `komendy.fly`, `komendy.flyspeed`, `komendy.ban`
+(wszystkie bany i `/unban`), `komendy.mute` (wszystkie wyciszenia i `/unmute`) oraz
+`komendy.others` (używanie `/gm` i `/fly` na innych graczach). Domyślnie dla OP.
 
 ## Budowanie
 
@@ -38,5 +38,5 @@ Wyciszony gracz nie może pisać na czacie ani używać `/msg`, `/tell`, `/w`, `
 mvn package
 ```
 
-Gotowy plik: `target/AdmKomendy.jar` → wrzuć do `plugins/`.
+Gotowy plik: `target/Komendy.jar` → wrzuć do `plugins/`.
 Jar buduje się też automatycznie w GitHub Actions (zakładka Actions → Artifacts).
