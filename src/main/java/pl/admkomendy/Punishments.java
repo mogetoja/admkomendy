@@ -33,8 +33,7 @@ import java.util.regex.Pattern;
  */
 public class Punishments implements CommandExecutor, TabCompleter, Listener {
 
-    private static final String PREFIX =
-            ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "" + ChatColor.BOLD + "AdmKomendy" + ChatColor.RESET + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
+    private static final String PREFIX = "";
 
     private static final String DEFAULT_REASON = "Brak powodu";
     private static final Pattern IPV4 = Pattern.compile("^\\d{1,3}(\\.\\d{1,3}){3}$");

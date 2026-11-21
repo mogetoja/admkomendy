@@ -19,8 +19,7 @@ import java.util.Locale;
 
 public class AdmKomendy extends JavaPlugin implements CommandExecutor, TabCompleter {
 
-    private static final String PREFIX =
-            ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "" + ChatColor.BOLD + "AdmKomendy" + ChatColor.RESET + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
+    private static final String PREFIX = "";
 
     @Override
     public void onEnable() {
@@ -38,7 +37,7 @@ public class AdmKomendy extends JavaPlugin implements CommandExecutor, TabComple
             }
         }
         getServer().getPluginManager().registerEvents(punishments, this);
-        getLogger().info("AdmKomendy wlaczony!");
+        getLogger().info("Plugin wlaczony!");
     }
 
     // ------------------------------------------------------------------ helpers
