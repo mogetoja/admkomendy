@@ -22,8 +22,46 @@ commands:
     description: Ustawia predkosc latania (1-10)
     usage: /flyspeed <1-10>
     permission: admkomendy.flyspeed
+  ban:
+    description: Banuje gracza na stale
+    usage: /ban <nick> [powod]
+    permission: admkomendy.ban
+  tempban:
+    description: Banuje gracza na czas
+    usage: /tempban <nick> <czas> [powod]
+    permission: admkomendy.ban
+  tempbanip:
+    description: Banuje adres IP na czas
+    usage: /tempbanip <nick|ip> <czas> [powod]
+    permission: admkomendy.ban
+  unban:
+    description: Zdejmuje bana (nick lub IP)
+    usage: /unban <nick|ip>
+    permission: admkomendy.ban
+  mute:
+    description: Wycisza gracza na stale
+    usage: /mute <nick> [powod]
+    permission: admkomendy.mute
+  tempmute:
+    description: Wycisza gracza na czas
+    usage: /tempmute <nick> <czas> [powod]
+    permission: admkomendy.mute
+  tempmuteip:
+    description: Wycisza adres IP na czas
+    usage: /tempmuteip <nick|ip> <czas> [powod]
+    permission: admkomendy.mute
+  unmute:
+    description: Zdejmuje wyciszenie (nick lub IP)
+    usage: /unmute <nick|ip>
+    permission: admkomendy.mute
 
 permissions:
+  admkomendy.ban:
+    description: Uzywanie /ban, /tempban, /tempbanip i /unban
+    default: op
+  admkomendy.mute:
+    description: Uzywanie /mute, /tempmute, /tempmuteip i /unmute
+    default: op
   admkomendy.tp:
     default: op
   admkomendy.gm:

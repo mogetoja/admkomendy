@@ -30,6 +30,14 @@ public class AdmKomendy extends JavaPlugin implements CommandExecutor, TabComple
                 getCommand(name).setTabCompleter(this);
             }
         }
+        Punishments punishments = new Punishments(this);
+        for (String name : new String[]{"ban", "tempban", "tempbanip", "mute", "tempmute", "tempmuteip", "unban", "unmute"}) {
+            if (getCommand(name) != null) {
+                getCommand(name).setExecutor(punishments);
+                getCommand(name).setTabCompleter(punishments);
+            }
+        }
+        getServer().getPluginManager().registerEvents(punishments, this);
         getLogger().info("AdmKomendy wlaczony!");
     }
 
