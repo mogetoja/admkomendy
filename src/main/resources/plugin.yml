@@ -30,15 +30,15 @@ commands:
   tempban:
     description: Banuje gracza na czas
     usage: /tempban <nick> <czas> [powod]
-    permission: komendy.ban
+    permission: komendy.tempban
   tempbanip:
     description: Banuje adres IP na czas
     usage: /tempbanip <nick|ip> <czas> [powod]
-    permission: komendy.ban
+    permission: komendy.tempbanip
   unban:
     description: Zdejmuje bana (nick lub IP)
     usage: /unban <nick|ip>
-    permission: komendy.ban
+    permission: komendy.unban
   mute:
     description: Wycisza gracza na stale
     usage: /mute <nick> [powod]
@@ -46,31 +46,59 @@ commands:
   tempmute:
     description: Wycisza gracza na czas
     usage: /tempmute <nick> <czas> [powod]
-    permission: komendy.mute
+    permission: komendy.tempmute
   tempmuteip:
     description: Wycisza adres IP na czas
     usage: /tempmuteip <nick|ip> <czas> [powod]
-    permission: komendy.mute
+    permission: komendy.tempmuteip
   unmute:
     description: Zdejmuje wyciszenie (nick lub IP)
     usage: /unmute <nick|ip>
-    permission: komendy.mute
+    permission: komendy.unmute
 
 permissions:
-  komendy.ban:
-    description: Uzywanie /ban, /tempban, /tempbanip i /unban
-    default: op
-  komendy.mute:
-    description: Uzywanie /mute, /tempmute, /tempmuteip i /unmute
-    default: op
   komendy.tp:
+    description: Uzywanie /tp
     default: op
   komendy.gm:
+    description: Uzywanie /gm
+    default: op
+  komendy.gm.others:
+    description: /gm na innych graczach
     default: op
   komendy.fly:
+    description: Uzywanie /fly
+    default: op
+  komendy.fly.others:
+    description: /fly na innych graczach
     default: op
   komendy.flyspeed:
+    description: Uzywanie /flyspeed
     default: op
-  komendy.others:
-    description: Pozwala uzywac /gm i /fly na innych graczach
+  komendy.flyspeed.others:
+    description: /flyspeed na innych graczach
+    default: op
+  komendy.ban:
+    description: Uzywanie /ban
+    default: op
+  komendy.tempban:
+    description: Uzywanie /tempban
+    default: op
+  komendy.tempbanip:
+    description: Uzywanie /tempbanip
+    default: op
+  komendy.unban:
+    description: Uzywanie /unban
+    default: op
+  komendy.mute:
+    description: Uzywanie /mute
+    default: op
+  komendy.tempmute:
+    description: Uzywanie /tempmute
+    default: op
+  komendy.tempmuteip:
+    description: Uzywanie /tempmuteip
+    default: op
+  komendy.unmute:
+    description: Uzywanie /unmute
     default: op

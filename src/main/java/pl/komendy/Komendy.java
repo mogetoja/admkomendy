@@ -187,7 +187,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
 
         Player target;
         if (args.length == 2) {
-            if (!sender.hasPermission("komendy.others")) { err(sender, "Nie masz uprawnień do zmiany trybu innym graczom."); return; }
+            if (!sender.hasPermission("komendy.gm.others")) { err(sender, "Nie masz uprawnień do zmiany trybu innym graczom."); return; }
             target = Bukkit.getPlayerExact(args[1]);
             if (target == null) { err(sender, "Gracz " + hl(args[1]) + " nie jest online."); return; }
         } else {
@@ -205,7 +205,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
     private void handleFly(CommandSender sender, String[] args) {
         Player target;
         if (args.length >= 1) {
-            if (!sender.hasPermission("komendy.others")) { err(sender, "Nie masz uprawnień do zmiany latania innym graczom."); return; }
+            if (!sender.hasPermission("komendy.fly.others")) { err(sender, "Nie masz uprawnień do zmiany latania innym graczom."); return; }
             target = Bukkit.getPlayerExact(args[0]);
             if (target == null) { err(sender, "Gracz " + hl(args[0]) + " nie jest online."); return; }
         } else {
@@ -230,7 +230,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
 
         Player p;
         if (args.length == 2) {
-            if (!sender.hasPermission("komendy.others")) { err(sender, "Nie masz uprawnień do zmiany prędkości innym graczom."); return; }
+            if (!sender.hasPermission("komendy.flyspeed.others")) { err(sender, "Nie masz uprawnień do zmiany prędkości innym graczom."); return; }
             p = Bukkit.getPlayerExact(args[1]);
             if (p == null) { err(sender, "Gracz " + hl(args[1]) + " nie jest online."); return; }
         } else {

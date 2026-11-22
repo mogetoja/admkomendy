@@ -39,9 +39,22 @@ disabled-commands:
 
 ## Uprawnienia
 
-`komendy.tp`, `komendy.gm`, `komendy.fly`, `komendy.flyspeed`, `komendy.ban`
-(wszystkie bany i `/unban`), `komendy.mute` (wszystkie wyciszenia i `/unmute`) oraz
-`komendy.others` (używanie `/gm` i `/fly` na innych graczach). Domyślnie dla OP.
+Każda komenda ma własne uprawnienie (domyślnie dla OP):
+
+| Uprawnienie | Do czego |
+|---|---|
+| `komendy.tp` | `/tp` |
+| `komendy.gm` / `komendy.gm.others` | `/gm` / `/gm` na innych graczach |
+| `komendy.fly` / `komendy.fly.others` | `/fly` / `/fly` na innych graczach |
+| `komendy.flyspeed` / `komendy.flyspeed.others` | `/flyspeed` / `/flyspeed` na innych graczach |
+| `komendy.ban` | `/ban` |
+| `komendy.tempban` | `/tempban` |
+| `komendy.tempbanip` | `/tempbanip` |
+| `komendy.unban` | `/unban` |
+| `komendy.mute` | `/mute` |
+| `komendy.tempmute` | `/tempmute` |
+| `komendy.tempmuteip` | `/tempmuteip` |
+| `komendy.unmute` | `/unmute` |
 
 ## Budowanie
 
