@@ -13,6 +13,8 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 | `/gm <0-3> [nick]` | 0 survival, 1 creative, 2 adventure, 3 spectator |
 | `/fly [nick]` | włącza/wyłącza latanie |
 | `/flyspeed <1-10> [nick]` | prędkość latania sobie lub wskazanemu graczowi (liczby całkowite) |
+| `/repair` | naprawia przedmiot trzymany w ręce |
+| `/repair all` | naprawia wszystkie przedmioty (ekwipunek, zbroja, druga ręka) |
 | `/ban <nick> [powód]` | ban na stałe |
 | `/tempban <nick> <czas> [powód]` | ban na czas |
 | `/tempbanip <nick\|ip> <czas> [powód]` | ban na adres IP na czas |
@@ -47,6 +49,8 @@ Każda komenda ma własne uprawnienie (domyślnie dla OP):
 | `komendy.gm` / `komendy.gm.others` | `/gm` / `/gm` na innych graczach |
 | `komendy.fly` / `komendy.fly.others` | `/fly` / `/fly` na innych graczach |
 | `komendy.flyspeed` / `komendy.flyspeed.others` | `/flyspeed` / `/flyspeed` na innych graczach |
+| `komendy.repair` | `/repair` |
+| `komendy.repair.all` | `/repair all` |
 | `komendy.ban` | `/ban` |
 | `komendy.tempban` | `/tempban` |
 | `komendy.tempbanip` | `/tempbanip` |

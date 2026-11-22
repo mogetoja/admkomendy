@@ -10,6 +10,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -28,7 +31,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
 
     @Override
     public void onEnable() {
-        for (String name : new String[]{"tp", "gm", "fly", "flyspeed"}) {
+        for (String name : new String[]{"tp", "gm", "fly", "flyspeed", "repair"}) {
             if (getCommand(name) != null) {
                 getCommand(name).setExecutor(this);
                 getCommand(name).setTabCompleter(this);
@@ -93,6 +96,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
             case "gm" -> handleGm(sender, args);
             case "fly" -> handleFly(sender, args);
             case "flyspeed" -> handleFlySpeed(sender, args);
+            case "repair" -> handleRepair(sender, args);
             default -> { return false; }
         }
         return true;
@@ -261,6 +265,54 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         ding(p);
     }
 
+    // ------------------------------------------------------------------ /repair
+
+    private boolean repairItem(ItemStack item) {
+        if (item == null || item.getType().isAir()) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (!(meta instanceof Damageable dmg) || dmg.getDamage() <= 0) return false;
+        dmg.setDamage(0);
+        item.setItemMeta(dmg);
+        return true;
+    }
+
+    private String itemsWord(int n) {
+        if (n == 1) return "przedmiot";
+        int last = n % 10, lastTwo = n % 100;
+        if (last >= 2 && last <= 4 && !(lastTwo >= 12 && lastTwo <= 14)) return "przedmioty";
+        return "przedmiotów";
+    }
+
+    private void handleRepair(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player p)) { err(sender, "Tę komendę może użyć tylko gracz."); return; }
+
+        if (args.length == 0) {
+            ItemStack hand = p.getInventory().getItemInMainHand();
+            if (hand.getType().isAir()) { err(p, "Musisz trzymać przedmiot w ręce."); return; }
+            if (!repairItem(hand)) { err(p, "Ten przedmiot nie wymaga naprawy."); return; }
+            p.getInventory().setItemInMainHand(hand);
+            ok(p, "Pomyślnie naprawiono przedmiot");
+            ding(p);
+            return;
+        }
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("all")) {
+            if (!p.hasPermission("komendy.repair.all")) { err(p, "Nie masz uprawnień do naprawiania wszystkich przedmiotów."); return; }
+            ItemStack[] contents = p.getInventory().getContents();
+            int count = 0;
+            for (ItemStack item : contents) {
+                if (repairItem(item)) count++;
+            }
+            if (count == 0) { err(p, "Nie masz żadnych przedmiotów do naprawy."); return; }
+            p.getInventory().setContents(contents);
+            ok(p, "Pomyślnie naprawiono " + hl(String.valueOf(count)) + " " + itemsWord(count));
+            ding(p);
+            return;
+        }
+
+        usage(sender, "/repair " + ChatColor.GRAY + "|" + ChatColor.WHITE + " /repair all");
+    }
+
     // ------------------------------------------------------------------ /gm zawsze z tego pluginu
 
     /** Przekierowuje /gm na wersję z tego pluginu, żeby Essentials (i inne) nie mogły jej przejąć. */
@@ -302,6 +354,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
                 else if (args.length == 2) addPlayers(out, last);
             }
             case "fly" -> { if (args.length == 1) addPlayers(out, last); }
+            case "repair" -> { if (args.length == 1 && sender.hasPermission("komendy.repair.all")) out.add("all"); }
             case "flyspeed" -> {
                 if (args.length == 1) for (int i = 1; i <= 10; i++) out.add(String.valueOf(i));
                 else if (args.length == 2) addPlayers(out, last);

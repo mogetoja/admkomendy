@@ -23,6 +23,10 @@ commands:
     description: Ustawia predkosc latania (1-10)
     usage: /flyspeed <1-10> [nick]
     permission: komendy.flyspeed
+  repair:
+    description: Naprawia przedmiot w rece albo wszystkie (all)
+    usage: /repair | /repair all
+    permission: komendy.repair
   ban:
     description: Banuje gracza na stale
     usage: /ban <nick> [powod]
@@ -77,6 +81,12 @@ permissions:
     default: op
   komendy.flyspeed.others:
     description: /flyspeed na innych graczach
+    default: op
+  komendy.repair:
+    description: Uzywanie /repair (przedmiot w rece)
+    default: op
+  komendy.repair.all:
+    description: Uzywanie /repair all
     default: op
   komendy.ban:
     description: Uzywanie /ban
