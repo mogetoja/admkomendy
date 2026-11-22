@@ -12,7 +12,7 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 | `/tp <nick> <x> <y> <z>` | teleportuje gracza na koordynaty |
 | `/gm <0-3> [nick]` | 0 survival, 1 creative, 2 adventure, 3 spectator |
 | `/fly [nick]` | włącza/wyłącza latanie |
-| `/flyspeed <1-10>` | prędkość latania (liczby całkowite) |
+| `/flyspeed <1-10> [nick]` | prędkość latania sobie lub wskazanemu graczowi (liczby całkowite) |
 | `/ban <nick> [powód]` | ban na stałe |
 | `/tempban <nick> <czas> [powód]` | ban na czas |
 | `/tempbanip <nick\|ip> <czas> [powód]` | ban na adres IP na czas |
@@ -25,6 +25,17 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 Czas podajesz jako `30m`, `2h`, `7d`, `1d12h` (jednostki: `s` `m` `h` `d` `w`, maksymalnie 10 lat).
 Kary zapisują się w `plugins/Komendy/punishments.yml` i przetrwają restart serwera.
 Wyciszony gracz nie może pisać na czacie ani używać `/msg`, `/tell`, `/w`, `/r`, `/me`, `/say`.
+
+## /gm i Essentials
+
+`/gm` zawsze uruchamia wersję z tego pluginu, nawet gdy Essentials też ją ma: plugin przekierowuje
+`/gm` na `/komendy:gm` (dla graczy i konsoli), więc nic się nie kłóci. Opcjonalnie możesz też
+wyłączyć `/gm` w Essentials, dopisując w jego `config.yml`:
+
+```yaml
+disabled-commands:
+  - gm
+```
 
 ## Uprawnienia
 

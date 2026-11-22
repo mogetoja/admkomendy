@@ -10,6 +10,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -17,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter {
+public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter, Listener {
 
     private static final String PREFIX = "";
 
@@ -37,6 +42,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
             }
         }
         getServer().getPluginManager().registerEvents(punishments, this);
+        getServer().getPluginManager().registerEvents(this, this);
         getLogger().info("Plugin wlaczony!");
     }
 
@@ -220,8 +226,17 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
     }
 
     private void handleFlySpeed(CommandSender sender, String[] args) {
-        if (!(sender instanceof Player p)) { err(sender, "Tę komendę może użyć tylko gracz."); return; }
-        if (args.length != 1) { usage(sender, "/flyspeed <1-10>"); return; }
+        if (args.length < 1 || args.length > 2) { usage(sender, "/flyspeed <1-10> [nick]"); return; }
+
+        Player p;
+        if (args.length == 2) {
+            if (!sender.hasPermission("komendy.others")) { err(sender, "Nie masz uprawnień do zmiany prędkości innym graczom."); return; }
+            p = Bukkit.getPlayerExact(args[1]);
+            if (p == null) { err(sender, "Gracz " + hl(args[1]) + " nie jest online."); return; }
+        } else {
+            if (!(sender instanceof Player self)) { err(sender, "Podaj nick gracza: /flyspeed <1-10> <nick>"); return; }
+            p = self;
+        }
 
         int level;
         try {
@@ -242,7 +257,31 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
             bar.append(i <= level ? ChatColor.AQUA : ChatColor.DARK_GRAY).append("▌");
         }
         ok(p, "Prędkość latania ustawiona na " + hl(String.valueOf(level)) + ChatColor.DARK_GRAY + "/" + ChatColor.GRAY + "10 " + bar);
+        if (sender != p) ok(sender, "Ustawiono prędkość latania " + hl(String.valueOf(level)) + ChatColor.DARK_GRAY + "/" + ChatColor.GRAY + "10 dla gracza " + hl(p.getName()) + ".");
         ding(p);
+    }
+
+    // ------------------------------------------------------------------ /gm zawsze z tego pluginu
+
+    /** Przekierowuje /gm na wersję z tego pluginu, żeby Essentials (i inne) nie mogły jej przejąć. */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerCommand(PlayerCommandPreprocessEvent ev) {
+        String fixed = redirectGm(ev.getMessage(), "/");
+        if (fixed != null) ev.setMessage(fixed);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onServerCommand(ServerCommandEvent ev) {
+        String fixed = redirectGm(ev.getCommand(), "");
+        if (fixed != null) ev.setCommand(fixed);
+    }
+
+    private String redirectGm(String message, String slash) {
+        if (!message.startsWith(slash)) return null;
+        String body = message.substring(slash.length());
+        String[] parts = body.split(" ", 2);
+        if (!parts[0].equalsIgnoreCase("gm")) return null;
+        return slash + "komendy:gm" + (parts.length > 1 ? " " + parts[1] : "");
     }
 
     // ------------------------------------------------------------------ tab complete
@@ -265,6 +304,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
             case "fly" -> { if (args.length == 1) addPlayers(out, last); }
             case "flyspeed" -> {
                 if (args.length == 1) for (int i = 1; i <= 10; i++) out.add(String.valueOf(i));
+                else if (args.length == 2) addPlayers(out, last);
             }
             default -> { }
         }

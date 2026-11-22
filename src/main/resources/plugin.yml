@@ -2,6 +2,7 @@ name: Komendy
 version: 1.0.0
 main: pl.komendy.Komendy
 api-version: "1.21"
+loadbefore: [Essentials, EssentialsX]
 author: you
 description: Proste komendy /tp, /gm, /fly i /flyspeed
 
@@ -20,7 +21,7 @@ commands:
     permission: komendy.fly
   flyspeed:
     description: Ustawia predkosc latania (1-10)
-    usage: /flyspeed <1-10>
+    usage: /flyspeed <1-10> [nick]
     permission: komendy.flyspeed
   ban:
     description: Banuje gracza na stale
