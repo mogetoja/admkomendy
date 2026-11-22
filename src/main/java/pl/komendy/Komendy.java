@@ -44,6 +44,14 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
                 getCommand(name).setTabCompleter(punishments);
             }
         }
+        Messages messages = new Messages();
+        for (String name : new String[]{"msg", "r"}) {
+            if (getCommand(name) != null) {
+                getCommand(name).setExecutor(messages);
+                getCommand(name).setTabCompleter(messages);
+            }
+        }
+        getServer().getPluginManager().registerEvents(messages, this);
         getServer().getPluginManager().registerEvents(punishments, this);
         getServer().getPluginManager().registerEvents(this, this);
         getLogger().info("Plugin wlaczony!");
@@ -313,27 +321,56 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         usage(sender, "/repair " + ChatColor.GRAY + "|" + ChatColor.WHITE + " /repair all");
     }
 
-    // ------------------------------------------------------------------ /gm zawsze z tego pluginu
+    // ------------------------------------------------------------------ przekierowania (Essentials nie przejmie komend)
 
-    /** Przekierowuje /gm na wersję z tego pluginu, żeby Essentials (i inne) nie mogły jej przejąć. */
+    /**
+     * Przekierowuje /gm, F3+F4 (to wysyła /gamemode), /msg i /r na wersje z tego pluginu,
+     * żeby Essentials (i inne pluginy) nie mogły ich przejąć.
+     */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerCommand(PlayerCommandPreprocessEvent ev) {
-        String fixed = redirectGm(ev.getMessage(), "/");
+        String fixed = redirect(ev.getMessage(), "/");
         if (fixed != null) ev.setMessage(fixed);
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onServerCommand(ServerCommandEvent ev) {
-        String fixed = redirectGm(ev.getCommand(), "");
+        String fixed = redirect(ev.getCommand(), "");
         if (fixed != null) ev.setCommand(fixed);
     }
 
-    private String redirectGm(String message, String slash) {
+    private static final java.util.Set<String> MSG_LABELS = java.util.Set.of(
+            "msg", "tell", "w", "m", "whisper", "pm", "t",
+            "minecraft:msg", "minecraft:tell", "minecraft:w");
+    private static final java.util.Set<String> REPLY_LABELS = java.util.Set.of("r", "reply");
+
+    private String redirect(String message, String slash) {
         if (!message.startsWith(slash)) return null;
         String body = message.substring(slash.length());
         String[] parts = body.split(" ", 2);
-        if (!parts[0].equalsIgnoreCase("gm")) return null;
-        return slash + "komendy:gm" + (parts.length > 1 ? " " + parts[1] : "");
+        String label = parts[0].toLowerCase(Locale.ROOT);
+        String rest = parts.length > 1 ? parts[1] : "";
+        String tail = rest.isEmpty() ? "" : " " + rest;
+
+        if (label.equals("gm")) return slash + "komendy:gm" + tail;
+        if (MSG_LABELS.contains(label)) return slash + "komendy:msg" + tail;
+        if (REPLY_LABELS.contains(label)) return slash + "komendy:r" + tail;
+
+        // F3+F4 w grze wysyła /gamemode <survival|creative|adventure|spectator>
+        if (slash.equals("/") && (label.equals("gamemode") || label.equals("minecraft:gamemode"))) {
+            String[] a = rest.split(" ", 2);
+            String number = switch (a[0].toLowerCase(Locale.ROOT)) {
+                case "survival", "0" -> "0";
+                case "creative", "1" -> "1";
+                case "adventure", "2" -> "2";
+                case "spectator", "3" -> "3";
+                default -> null;
+            };
+            if (number == null) return null;
+            if (a.length > 1 && a[1].startsWith("@")) return null; // selektory zostawiamy vanilli
+            return "/komendy:gm " + number + (a.length > 1 ? " " + a[1] : "");
+        }
+        return null;
     }
 
     // ------------------------------------------------------------------ tab complete

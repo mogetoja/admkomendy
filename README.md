@@ -13,6 +13,8 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 | `/gm <0-3> [nick]` | 0 survival, 1 creative, 2 adventure, 3 spectator |
 | `/fly [nick]` | włącza/wyłącza latanie |
 | `/flyspeed <1-10> [nick]` | prędkość latania sobie lub wskazanemu graczowi (liczby całkowite) |
+| `/msg <nick> <wiadomość>` | prywatna wiadomość (aliasy: `/tell`, `/w`, `/m`, `/whisper`, `/pm`) |
+| `/r <wiadomość>` | odpowiedź ostatniemu rozmówcy (alias: `/reply`) |
 | `/repair` | naprawia przedmiot trzymany w ręce |
 | `/repair all` | naprawia wszystkie przedmioty (ekwipunek, zbroja, druga ręka) |
 | `/ban <nick> [powód]` | ban na stałe |
@@ -28,11 +30,13 @@ Czas podajesz jako `30m`, `2h`, `7d`, `1d12h` (jednostki: `s` `m` `h` `d` `w`, m
 Kary zapisują się w `plugins/Komendy/punishments.yml` i przetrwają restart serwera.
 Wyciszony gracz nie może pisać na czacie ani używać `/msg`, `/tell`, `/w`, `/r`, `/me`, `/say`.
 
-## /gm i Essentials
+## Konflikty z Essentials
 
-`/gm` zawsze uruchamia wersję z tego pluginu, nawet gdy Essentials też ją ma: plugin przekierowuje
-`/gm` na `/komendy:gm` (dla graczy i konsoli), więc nic się nie kłóci. Opcjonalnie możesz też
-wyłączyć `/gm` w Essentials, dopisując w jego `config.yml`:
+`/gm`, `/msg` (i aliasy) oraz `/r` zawsze uruchamiają wersję z tego pluginu, nawet gdy Essentials też je ma:
+plugin przekierowuje je na `/komendy:gm`, `/komendy:msg` i `/komendy:r`, więc nic się nie kłóci.
+Zmiana trybu gry przez **F3+F4** też idzie przez ten plugin (klient wysyła wtedy `/gamemode`,
+które plugin zamienia na `/gm`), więc widzisz jego komunikaty, a nie z Essentials.
+Opcjonalnie możesz też wyłączyć `/gm` w Essentials, dopisując w jego `config.yml`:
 
 ```yaml
 disabled-commands:
@@ -49,6 +53,8 @@ Każda komenda ma własne uprawnienie (domyślnie dla OP):
 | `komendy.gm` / `komendy.gm.others` | `/gm` / `/gm` na innych graczach |
 | `komendy.fly` / `komendy.fly.others` | `/fly` / `/fly` na innych graczach |
 | `komendy.flyspeed` / `komendy.flyspeed.others` | `/flyspeed` / `/flyspeed` na innych graczach |
+| `komendy.msg` | `/msg` (domyślnie dla wszystkich) |
+| `komendy.r` | `/r` (domyślnie dla wszystkich) |
 | `komendy.repair` | `/repair` |
 | `komendy.repair.all` | `/repair all` |
 | `komendy.ban` | `/ban` |

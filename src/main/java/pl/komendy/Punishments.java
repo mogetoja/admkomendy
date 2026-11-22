@@ -43,7 +43,8 @@ public class Punishments implements CommandExecutor, TabCompleter, Listener {
     /** Komendy zablokowane dla wyciszonych graczy (poza zwykłym czatem). */
     private static final Set<String> MUTED_COMMANDS = Set.of(
             "msg", "tell", "w", "whisper", "m", "t", "r", "reply", "me", "say", "pm", "emsg",
-            "minecraft:msg", "minecraft:tell", "minecraft:w", "minecraft:me", "minecraft:say");
+            "minecraft:msg", "minecraft:tell", "minecraft:w", "minecraft:me", "minecraft:say",
+            "komendy:msg", "komendy:r");
 
     private enum Type { BAN, MUTE }
 

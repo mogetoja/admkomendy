@@ -23,6 +23,16 @@ commands:
     description: Ustawia predkosc latania (1-10)
     usage: /flyspeed <1-10> [nick]
     permission: komendy.flyspeed
+  msg:
+    description: Wysyla prywatna wiadomosc
+    usage: /msg <nick> <wiadomosc>
+    aliases: [tell, w, m, whisper, pm]
+    permission: komendy.msg
+  r:
+    description: Odpowiada na ostatnia prywatna wiadomosc
+    usage: /r <wiadomosc>
+    aliases: [reply]
+    permission: komendy.r
   repair:
     description: Naprawia przedmiot w rece albo wszystkie (all)
     usage: /repair | /repair all
@@ -82,6 +92,12 @@ permissions:
   komendy.flyspeed.others:
     description: /flyspeed na innych graczach
     default: op
+  komendy.msg:
+    description: Uzywanie /msg
+    default: true
+  komendy.r:
+    description: Uzywanie /r
+    default: true
   komendy.repair:
     description: Uzywanie /repair (przedmiot w rece)
     default: op
