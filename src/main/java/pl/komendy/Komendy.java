@@ -341,8 +341,13 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
 
     private static final java.util.Set<String> MSG_LABELS = java.util.Set.of(
             "msg", "tell", "w", "m", "whisper", "pm", "t",
-            "minecraft:msg", "minecraft:tell", "minecraft:w");
-    private static final java.util.Set<String> REPLY_LABELS = java.util.Set.of("r", "reply");
+            "minecraft:msg", "minecraft:tell", "minecraft:w",
+            "emsg", "etell", "ewhisper",
+            "essentials:msg", "essentials:tell", "essentials:w", "essentials:whisper", "essentials:m",
+            "essentials:t", "essentials:pm", "essentials:emsg", "essentials:etell", "essentials:ewhisper");
+    private static final java.util.Set<String> REPLY_LABELS = java.util.Set.of(
+            "r", "reply", "er", "ereply",
+            "essentials:r", "essentials:reply", "essentials:er", "essentials:ereply");
 
     private String redirect(String message, String slash) {
         if (!message.startsWith(slash)) return null;

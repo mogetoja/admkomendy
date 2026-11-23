@@ -44,7 +44,11 @@ public class Punishments implements CommandExecutor, TabCompleter, Listener {
     private static final Set<String> MUTED_COMMANDS = Set.of(
             "msg", "tell", "w", "whisper", "m", "t", "r", "reply", "me", "say", "pm", "emsg",
             "minecraft:msg", "minecraft:tell", "minecraft:w", "minecraft:me", "minecraft:say",
-            "komendy:msg", "komendy:r");
+            "komendy:msg", "komendy:r",
+            "etell", "ewhisper", "er", "ereply",
+            "essentials:msg", "essentials:tell", "essentials:w", "essentials:whisper", "essentials:m",
+            "essentials:t", "essentials:pm", "essentials:emsg", "essentials:etell", "essentials:ewhisper",
+            "essentials:r", "essentials:reply", "essentials:er", "essentials:ereply");
 
     private enum Type { BAN, MUTE }
 
