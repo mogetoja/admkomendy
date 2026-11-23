@@ -41,6 +41,11 @@ commands:
     description: Banuje gracza na stale
     usage: /ban <nick> [powod]
     permission: komendy.ban
+  banip:
+    description: Banuje adres IP na stale
+    usage: /banip <nick|ip> [powod]
+    aliases: [ban-ip]
+    permission: komendy.banip
   tempban:
     description: Banuje gracza na czas
     usage: /tempban <nick> <czas> [powod]
@@ -52,6 +57,7 @@ commands:
   unban:
     description: Zdejmuje bana (nick lub IP)
     usage: /unban <nick|ip>
+    aliases: [unbanip, pardon, pardon-ip]
     permission: komendy.unban
   mute:
     description: Wycisza gracza na stale
@@ -106,6 +112,9 @@ permissions:
     default: op
   komendy.ban:
     description: Uzywanie /ban
+    default: op
+  komendy.banip:
+    description: Uzywanie /banip
     default: op
   komendy.tempban:
     description: Uzywanie /tempban

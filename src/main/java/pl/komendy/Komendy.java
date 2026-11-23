@@ -38,7 +38,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
             }
         }
         Punishments punishments = new Punishments(this);
-        for (String name : new String[]{"ban", "tempban", "tempbanip", "mute", "tempmute", "tempmuteip", "unban", "unmute"}) {
+        for (String name : new String[]{"ban", "banip", "tempban", "tempbanip", "mute", "tempmute", "tempmuteip", "unban", "unmute"}) {
             if (getCommand(name) != null) {
                 getCommand(name).setExecutor(punishments);
                 getCommand(name).setTabCompleter(punishments);
@@ -345,6 +345,21 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
             "emsg", "etell", "ewhisper",
             "essentials:msg", "essentials:tell", "essentials:w", "essentials:whisper", "essentials:m",
             "essentials:t", "essentials:pm", "essentials:emsg", "essentials:etell", "essentials:ewhisper");
+    /** etykieta z innego pluginu/vanilli -> nasza komenda */
+    private static final java.util.Map<String, String> PUNISH_REDIRECTS = java.util.Map.ofEntries(
+            java.util.Map.entry("ban", "ban"),
+            java.util.Map.entry("banip", "banip"),
+            java.util.Map.entry("ban-ip", "banip"),
+            java.util.Map.entry("tempban", "tempban"),
+            java.util.Map.entry("tempbanip", "tempbanip"),
+            java.util.Map.entry("unban", "unban"),
+            java.util.Map.entry("unbanip", "unban"),
+            java.util.Map.entry("pardon", "unban"),
+            java.util.Map.entry("pardon-ip", "unban"),
+            java.util.Map.entry("mute", "mute"),
+            java.util.Map.entry("tempmute", "tempmute"),
+            java.util.Map.entry("tempmuteip", "tempmuteip"),
+            java.util.Map.entry("unmute", "unmute"));
     private static final java.util.Set<String> REPLY_LABELS = java.util.Set.of(
             "r", "reply", "er", "ereply",
             "essentials:r", "essentials:reply", "essentials:er", "essentials:ereply");
@@ -356,6 +371,18 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         String label = parts[0].toLowerCase(Locale.ROOT);
         String rest = parts.length > 1 ? parts[1] : "";
         String tail = rest.isEmpty() ? "" : " " + rest;
+
+        // bany i wyciszenia (także aliasy vanilli/Essentials i formy z prefiksem minecraft:/essentials:)
+        String base = label;
+        int colon = label.indexOf(':');
+        if (colon > 0) {
+            String prefix = label.substring(0, colon);
+            if (prefix.equals("minecraft") || prefix.equals("essentials") || prefix.equals("bukkit")) {
+                base = label.substring(colon + 1);
+            }
+        }
+        String punish = PUNISH_REDIRECTS.get(base);
+        if (punish != null) return slash + "komendy:" + punish + tail;
 
         if (label.equals("gm")) return slash + "komendy:gm" + tail;
         if (MSG_LABELS.contains(label)) return slash + "komendy:msg" + tail;

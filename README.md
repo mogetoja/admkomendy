@@ -18,6 +18,7 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 | `/repair` | naprawia przedmiot trzymany w ręce |
 | `/repair all` | naprawia wszystkie przedmioty (ekwipunek, zbroja, druga ręka) |
 | `/ban <nick> [powód]` | ban na stałe |
+| `/banip <nick\|ip> [powód]` | ban na adres IP na stałe (alias: `/ban-ip`) |
 | `/tempban <nick> <czas> [powód]` | ban na czas |
 | `/tempbanip <nick\|ip> <czas> [powód]` | ban na adres IP na czas |
 | `/unban <nick\|ip>` | zdjęcie bana |
@@ -31,6 +32,10 @@ Kary zapisują się w `plugins/Komendy/punishments.yml` i przetrwają restart se
 Wyciszony gracz nie może pisać na czacie ani używać `/msg`, `/tell`, `/w`, `/r`, `/me`, `/say`.
 
 ## Konflikty z Essentials
+
+Komendy banów i wyciszeń (`/ban`, `/banip`, `/ban-ip`, `/tempban`, `/unban`, `/unbanip`, `/pardon`,
+`/pardon-ip`, `/mute`, `/tempmute`, `/unmute`) też zawsze idą przez ten plugin, także w formie
+`/minecraft:ban`, `/essentials:ban` itd.
 
 `/gm`, `/msg` (i aliasy) oraz `/r` zawsze uruchamiają wersję z tego pluginu, nawet gdy Essentials też je ma:
 plugin przekierowuje je na `/komendy:gm`, `/komendy:msg` i `/komendy:r`, więc nic się nie kłóci.
@@ -58,6 +63,7 @@ Każda komenda ma własne uprawnienie (domyślnie dla OP):
 | `komendy.repair` | `/repair` |
 | `komendy.repair.all` | `/repair all` |
 | `komendy.ban` | `/ban` |
+| `komendy.banip` | `/banip` |
 | `komendy.tempban` | `/tempban` |
 | `komendy.tempbanip` | `/tempbanip` |
 | `komendy.unban` | `/unban` |

@@ -248,6 +248,7 @@ public class Punishments implements CommandExecutor, TabCompleter, Listener {
             case "ban" -> punish(sender, args, Type.BAN, false, false);
             case "tempban" -> punish(sender, args, Type.BAN, true, false);
             case "tempbanip" -> punish(sender, args, Type.BAN, true, true);
+            case "banip" -> punish(sender, args, Type.BAN, false, true);
             case "mute" -> punish(sender, args, Type.MUTE, false, false);
             case "tempmute" -> punish(sender, args, Type.MUTE, true, false);
             case "tempmuteip" -> punish(sender, args, Type.MUTE, true, true);
