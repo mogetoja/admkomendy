@@ -71,8 +71,11 @@ public class Punishments implements CommandExecutor, TabCompleter, Listener {
     private final File file;
     private final List<Entry> entries = new CopyOnWriteArrayList<>();
 
-    public Punishments(JavaPlugin plugin) {
+    private final Vanish vanish;
+
+    public Punishments(JavaPlugin plugin, Vanish vanish) {
         this.plugin = plugin;
+        this.vanish = vanish;
         this.file = new File(plugin.getDataFolder(), "punishments.yml");
         load();
     }
@@ -447,7 +450,9 @@ public class Punishments implements CommandExecutor, TabCompleter, Listener {
                     if (e.type == t && e.active()) out.add(e.display);
                 }
             } else {
-                for (Player p : Bukkit.getOnlinePlayers()) out.add(p.getName());
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (vanish.canSee(sender, p)) out.add(p.getName());
+                }
             }
         } else if (args.length == 2 && name.startsWith("temp")) {
             out.addAll(Arrays.asList("30m", "1h", "12h", "1d", "7d", "30d"));

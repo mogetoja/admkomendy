@@ -29,22 +29,27 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
 
     private static final String PREFIX = "";
 
+    private Vanish vanish;
+
     @Override
     public void onEnable() {
+        vanish = new Vanish(this);
+        if (getCommand("vanish") != null) getCommand("vanish").setExecutor(vanish);
+        getServer().getPluginManager().registerEvents(vanish, this);
         for (String name : new String[]{"tp", "gm", "fly", "flyspeed", "repair"}) {
             if (getCommand(name) != null) {
                 getCommand(name).setExecutor(this);
                 getCommand(name).setTabCompleter(this);
             }
         }
-        Punishments punishments = new Punishments(this);
+        Punishments punishments = new Punishments(this, vanish);
         for (String name : new String[]{"ban", "banip", "tempban", "tempbanip", "mute", "tempmute", "tempmuteip", "unban", "unmute"}) {
             if (getCommand(name) != null) {
                 getCommand(name).setExecutor(punishments);
                 getCommand(name).setTabCompleter(punishments);
             }
         }
-        Messages messages = new Messages();
+        Messages messages = new Messages(vanish);
         for (String name : new String[]{"msg", "r"}) {
             if (getCommand(name) != null) {
                 getCommand(name).setExecutor(messages);
@@ -114,7 +119,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         // /tp <nick>
         if (args.length == 1) {
             if (!(sender instanceof Player self)) { err(sender, "Tę komendę może użyć tylko gracz."); return; }
-            Player target = Bukkit.getPlayerExact(args[0]);
+            Player target = vanish.find(sender, args[0]);
             if (target == null) { err(sender, "Gracz " + hl(args[0]) + " nie jest online."); return; }
             self.teleport(target.getLocation());
             ok(self, "Teleportowano do gracza " + hl(target.getName()) + ".");
@@ -124,8 +129,8 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
 
         // /tp <nick> <nick2>
         if (args.length == 2) {
-            Player who = Bukkit.getPlayerExact(args[0]);
-            Player target = Bukkit.getPlayerExact(args[1]);
+            Player who = vanish.find(sender, args[0]);
+            Player target = vanish.find(sender, args[1]);
             if (who == null) { err(sender, "Gracz " + hl(args[0]) + " nie jest online."); return; }
             if (target == null) { err(sender, "Gracz " + hl(args[1]) + " nie jest online."); return; }
             who.teleport(target.getLocation());
@@ -144,7 +149,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
 
         // /tp <nick> <x> <y> <z>
         if (args.length == 4) {
-            Player who = Bukkit.getPlayerExact(args[0]);
+            Player who = vanish.find(sender, args[0]);
             if (who == null) { err(sender, "Gracz " + hl(args[0]) + " nie jest online."); return; }
             teleportToCoords(sender, who, args[1], args[2], args[3]);
             return;
@@ -200,7 +205,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         Player target;
         if (args.length == 2) {
             if (!sender.hasPermission("komendy.gm.others")) { err(sender, "Nie masz uprawnień do zmiany trybu innym graczom."); return; }
-            target = Bukkit.getPlayerExact(args[1]);
+            target = vanish.find(sender, args[1]);
             if (target == null) { err(sender, "Gracz " + hl(args[1]) + " nie jest online."); return; }
         } else {
             if (!(sender instanceof Player p)) { err(sender, "Podaj nick gracza: /gm <0-3> <nick>"); return; }
@@ -218,7 +223,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         Player target;
         if (args.length >= 1) {
             if (!sender.hasPermission("komendy.fly.others")) { err(sender, "Nie masz uprawnień do zmiany latania innym graczom."); return; }
-            target = Bukkit.getPlayerExact(args[0]);
+            target = vanish.find(sender, args[0]);
             if (target == null) { err(sender, "Gracz " + hl(args[0]) + " nie jest online."); return; }
         } else {
             if (!(sender instanceof Player p)) { err(sender, "Podaj nick gracza: /fly <nick>"); return; }
@@ -243,7 +248,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         Player p;
         if (args.length == 2) {
             if (!sender.hasPermission("komendy.flyspeed.others")) { err(sender, "Nie masz uprawnień do zmiany prędkości innym graczom."); return; }
-            p = Bukkit.getPlayerExact(args[1]);
+            p = vanish.find(sender, args[1]);
             if (p == null) { err(sender, "Gracz " + hl(args[1]) + " nie jest online."); return; }
         } else {
             if (!(sender instanceof Player self)) { err(sender, "Podaj nick gracza: /flyspeed <1-10> <nick>"); return; }
@@ -415,18 +420,18 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
 
         switch (name) {
             case "tp" -> {
-                if (args.length == 1 || (args.length == 2 && !looksLikeCoord(args[0]))) addPlayers(out, last);
+                if (args.length == 1 || (args.length == 2 && !looksLikeCoord(args[0]))) addPlayers(sender, out, last);
                 if (args.length == 1) out.add("~");
             }
             case "gm" -> {
                 if (args.length == 1) out.addAll(Arrays.asList("0", "1", "2", "3"));
-                else if (args.length == 2) addPlayers(out, last);
+                else if (args.length == 2) addPlayers(sender, out, last);
             }
-            case "fly" -> { if (args.length == 1) addPlayers(out, last); }
+            case "fly" -> { if (args.length == 1) addPlayers(sender, out, last); }
             case "repair" -> { if (args.length == 1 && sender.hasPermission("komendy.repair.all")) out.add("all"); }
             case "flyspeed" -> {
                 if (args.length == 1) for (int i = 1; i <= 10; i++) out.add(String.valueOf(i));
-                else if (args.length == 2) addPlayers(out, last);
+                else if (args.length == 2) addPlayers(sender, out, last);
             }
             default -> { }
         }
@@ -434,7 +439,9 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         return out;
     }
 
-    private void addPlayers(List<String> out, String prefix) {
-        for (Player p : Bukkit.getOnlinePlayers()) out.add(p.getName());
+    private void addPlayers(CommandSender sender, List<String> out, String prefix) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (vanish.canSee(sender, p)) out.add(p.getName());
+        }
     }
 }

@@ -28,6 +28,12 @@ public class Messages implements CommandExecutor, TabCompleter, Listener {
     /** gracz -> ostatni rozmówca (do /r) */
     private final Map<UUID, UUID> lastPartner = new ConcurrentHashMap<>();
 
+    private final Vanish vanish;
+
+    public Messages(Vanish vanish) {
+        this.vanish = vanish;
+    }
+
     // ------------------------------------------------------------------ komunikaty
 
     private void err(CommandSender s, String msg) {
@@ -59,7 +65,7 @@ public class Messages implements CommandExecutor, TabCompleter, Listener {
             usage(sender, "/msg <nick> <wiadomość>");
             return;
         }
-        Player target = Bukkit.getPlayerExact(args[0]);
+        Player target = vanish.find(sender, args[0]);
         if (target == null) { err(sender, "Gracz " + hl(args[0]) + " nie jest online."); return; }
         if (sender instanceof Player p && p.getUniqueId().equals(target.getUniqueId())) {
             err(sender, "Nie możesz napisać sam do siebie.");
@@ -75,6 +81,7 @@ public class Messages implements CommandExecutor, TabCompleter, Listener {
         UUID id = lastPartner.get(p.getUniqueId());
         if (id == null) { err(sender, "Nie masz komu odpisać."); return; }
         Player target = Bukkit.getPlayer(id);
+        if (target != null && !vanish.canSee(sender, target)) target = null;
         if (target == null) {
             lastPartner.remove(p.getUniqueId());
             err(sender, "Ten gracz nie jest już online.");
@@ -117,7 +124,7 @@ public class Messages implements CommandExecutor, TabCompleter, Listener {
         if (cmd.getName().equalsIgnoreCase("msg") && args.length == 1) {
             String last = args[0].toLowerCase(Locale.ROOT);
             for (Player p : Bukkit.getOnlinePlayers()) {
-                if (p.getName().toLowerCase(Locale.ROOT).startsWith(last)) out.add(p.getName());
+                if (vanish.canSee(sender, p) && p.getName().toLowerCase(Locale.ROOT).startsWith(last)) out.add(p.getName());
             }
         }
         return out;

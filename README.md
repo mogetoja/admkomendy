@@ -15,6 +15,7 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 | `/flyspeed <1-10> [nick]` | prędkość latania sobie lub wskazanemu graczowi (liczby całkowite) |
 | `/msg <nick> <wiadomość>` | prywatna wiadomość (aliasy: `/tell`, `/w`, `/m`, `/whisper`, `/pm`) |
 | `/r <wiadomość>` | odpowiedź ostatniemu rozmówcy (alias: `/reply`) |
+| `/vanish` | włącza/wyłącza pełne ukrycie (to nie niewidzialność z mikstury) |
 | `/repair` | naprawia przedmiot trzymany w ręce |
 | `/repair all` | naprawia wszystkie przedmioty (ekwipunek, zbroja, druga ręka) |
 | `/ban <nick> [powód]` | ban na stałe |
@@ -30,6 +31,13 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 Czas podajesz jako `30m`, `2h`, `7d`, `1d12h` (jednostki: `s` `m` `h` `d` `w`, maksymalnie 10 lat).
 Kary zapisują się w `plugins/Komendy/punishments.yml` i przetrwają restart serwera.
 Wyciszony gracz nie może pisać na czacie ani używać `/msg`, `/tell`, `/w`, `/r`, `/me`, `/say`.
+
+## Vanish
+
+Gracz w vanish znika dla wszystkich bez uprawnienia `komendy.vanish.bypass`: nie widać go w świecie,
+w tab-liście, w liście serwera (ping), w podpowiedziach i komendach tego pluginu (`/tp`, `/msg`,
+`/gm`...), nie ma wiadomości o wejściu, wyjściu i śmierci, a mobów nie namierza. Stan zapisuje się w
+`plugins/Komendy/vanished.yml`, więc po ponownym wejściu na serwer gracz nadal jest ukryty.
 
 ## Konflikty z Essentials
 
@@ -58,6 +66,8 @@ Każda komenda ma własne uprawnienie (domyślnie dla OP):
 | `komendy.gm` / `komendy.gm.others` | `/gm` / `/gm` na innych graczach |
 | `komendy.fly` / `komendy.fly.others` | `/fly` / `/fly` na innych graczach |
 | `komendy.flyspeed` / `komendy.flyspeed.others` | `/flyspeed` / `/flyspeed` na innych graczach |
+| `komendy.vanish` | `/vanish` |
+| `komendy.vanish.bypass` | widzenie graczy w vanish |
 | `komendy.msg` | `/msg` (domyślnie dla wszystkich) |
 | `komendy.r` | `/r` (domyślnie dla wszystkich) |
 | `komendy.repair` | `/repair` |

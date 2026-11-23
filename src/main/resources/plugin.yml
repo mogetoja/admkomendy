@@ -23,6 +23,10 @@ commands:
     description: Ustawia predkosc latania (1-10)
     usage: /flyspeed <1-10> [nick]
     permission: komendy.flyspeed
+  vanish:
+    description: Calkowicie ukrywa Cie przed innymi graczami
+    usage: /vanish
+    permission: komendy.vanish
   msg:
     description: Wysyla prywatna wiadomosc
     usage: /msg <nick> <wiadomosc>
@@ -97,6 +101,12 @@ permissions:
     default: op
   komendy.flyspeed.others:
     description: /flyspeed na innych graczach
+    default: op
+  komendy.vanish:
+    description: Uzywanie /vanish
+    default: op
+  komendy.vanish.bypass:
+    description: Widzenie graczy w vanish
     default: op
   komendy.msg:
     description: Uzywanie /msg
