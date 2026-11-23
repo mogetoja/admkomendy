@@ -104,6 +104,25 @@ public class Vanish implements CommandExecutor, Listener {
         }
     }
 
+    /** Co sekundę dopasowuje widoczność do aktualnych uprawnień (bypass nadany/zabrany działa od razu). */
+    public void start() {
+        Bukkit.getScheduler().runTaskTimer(plugin, this::refresh, 20L, 20L);
+    }
+
+    private void refresh() {
+        if (vanished.isEmpty()) return;
+        for (Player target : Bukkit.getOnlinePlayers()) {
+            if (!isVanished(target)) continue;
+            for (Player viewer : Bukkit.getOnlinePlayers()) {
+                if (viewer.equals(target)) continue;
+                boolean shouldSee = viewer.hasPermission(BYPASS);
+                boolean sees = viewer.canSee(target);
+                if (shouldSee && !sees) viewer.showPlayer(plugin, target);
+                else if (!shouldSee && sees) viewer.hidePlayer(plugin, target);
+            }
+        }
+    }
+
     // ------------------------------------------------------------------ komenda
 
     @Override

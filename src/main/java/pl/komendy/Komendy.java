@@ -36,6 +36,7 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
         vanish = new Vanish(this);
         if (getCommand("vanish") != null) getCommand("vanish").setExecutor(vanish);
         getServer().getPluginManager().registerEvents(vanish, this);
+        vanish.start();
         for (String name : new String[]{"tp", "gm", "fly", "flyspeed", "repair"}) {
             if (getCommand(name) != null) {
                 getCommand(name).setExecutor(this);

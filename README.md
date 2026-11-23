@@ -38,6 +38,7 @@ Gracz w vanish znika dla wszystkich bez uprawnienia `komendy.vanish.bypass`: nie
 w tab-liście, w liście serwera (ping), w podpowiedziach i komendach tego pluginu (`/tp`, `/msg`,
 `/gm`...), nie ma wiadomości o wejściu, wyjściu i śmierci, a mobów nie namierza. Stan zapisuje się w
 `plugins/Komendy/vanished.yml`, więc po ponownym wejściu na serwer gracz nadal jest ukryty.
+Widoczność odświeża się co sekundę, więc nadanie lub zabranie `komendy.vanish.bypass` działa od razu.
 
 ## Konflikty z Essentials
 
