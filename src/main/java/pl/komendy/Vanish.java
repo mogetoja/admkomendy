@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,7 +34,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * w liście serwera, w wiadomościach o wejściu/wyjściu/śmierci. Mob-y go nie namierzają.
  * Widzą go tylko osoby z uprawnieniem komendy.vanish.bypass.
  */
-public class Vanish implements CommandExecutor, Listener {
+public class Vanish implements CommandExecutor, TabCompleter, Listener {
 
     public static final String BYPASS = "komendy.vanish.bypass";
 
@@ -125,29 +126,66 @@ public class Vanish implements CommandExecutor, Listener {
 
     // ------------------------------------------------------------------ komenda
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (!(sender instanceof Player p)) {
-            sender.sendMessage(ChatColor.RED + "✘ " + ChatColor.GRAY + "Tę komendę może użyć tylko gracz.");
-            return true;
-        }
+    private static final String MODE = "tryb niewidzialności";
 
+    /** Przełącza vanish i zwraca nowy stan (true = włączony). */
+    private boolean toggle(Player p) {
         if (vanished.remove(p.getUniqueId())) {
             save();
             showToEveryone(p);
-            p.sendMessage(ChatColor.GREEN + "✔ " + ChatColor.GRAY + "Vanish "
-                    + ChatColor.RED + "" + ChatColor.BOLD + "WYŁĄCZONY" + ChatColor.RESET + ChatColor.GRAY
-                    + ". Jesteś znów widoczny dla wszystkich.");
-        } else {
-            vanished.add(p.getUniqueId());
-            save();
-            hideFromEveryone(p);
-            p.sendMessage(ChatColor.GREEN + "✔ " + ChatColor.GRAY + "Vanish "
-                    + ChatColor.GREEN + "" + ChatColor.BOLD + "WŁĄCZONY" + ChatColor.RESET + ChatColor.GRAY
-                    + ". Nikt bez uprawnienia " + ChatColor.AQUA + BYPASS + ChatColor.GRAY + " Cię nie widzi.");
+            return false;
         }
-        p.playSound(p.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.6f, 1.4f);
+        vanished.add(p.getUniqueId());
+        save();
+        hideFromEveryone(p);
         return true;
+    }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        if (args.length > 1) {
+            ModeNotice.usage(sender, "/vanish [nick]");
+            return true;
+        }
+
+        Player target;
+        if (args.length == 1) {
+            if (!sender.hasPermission("komendy.vanish.others")) {
+                ModeNotice.err(sender, "Nie masz uprawnień do zmiany trybu niewidzialności innym graczom.");
+                return true;
+            }
+            target = find(sender, args[0]);
+            if (target == null) {
+                ModeNotice.err(sender, "Gracz " + args[0] + " nie jest online.");
+                return true;
+            }
+        } else {
+            if (!(sender instanceof Player p)) {
+                ModeNotice.err(sender, "Podaj nick gracza: /vanish <nick>");
+                return true;
+            }
+            target = p;
+        }
+
+        boolean on = toggle(target);
+        if (sender.equals(target)) {
+            ModeNotice.self(target, MODE, on);
+        } else {
+            ModeNotice.other(sender, target, MODE, on);
+        }
+        return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+        List<String> out = new ArrayList<>();
+        if (args.length == 1 && sender.hasPermission("komendy.vanish.others")) {
+            String last = args[0].toLowerCase(java.util.Locale.ROOT);
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (canSee(sender, p) && p.getName().toLowerCase(java.util.Locale.ROOT).startsWith(last)) out.add(p.getName());
+            }
+        }
+        return out;
     }
 
     // ------------------------------------------------------------------ eventy

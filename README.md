@@ -15,7 +15,8 @@ Prosty plugin administracyjny na Paper/Spigot 1.21 (Java 21) z ładnymi komunika
 | `/flyspeed <1-10> [nick]` | prędkość latania sobie lub wskazanemu graczowi (liczby całkowite) |
 | `/msg <nick> <wiadomość>` | prywatna wiadomość (aliasy: `/tell`, `/w`, `/m`, `/whisper`, `/pm`) |
 | `/r <wiadomość>` | odpowiedź ostatniemu rozmówcy (alias: `/reply`) |
-| `/vanish` | włącza/wyłącza pełne ukrycie (to nie niewidzialność z mikstury) |
+| `/vanish [nick]` | włącza/wyłącza pełne ukrycie, sobie lub wskazanemu graczowi (to nie niewidzialność z mikstury) |
+| `/god [nick]` | włącza/wyłącza tryb nieśmiertelności (brak obrażeń i głodu), sobie lub wskazanemu graczowi |
 | `/repair` | naprawia przedmiot trzymany w ręce |
 | `/repair all` | naprawia wszystkie przedmioty (ekwipunek, zbroja, druga ręka) |
 | `/ban <nick> [powód]` | ban na stałe |
@@ -68,7 +69,9 @@ Każda komenda ma własne uprawnienie (domyślnie dla OP):
 | `komendy.fly` / `komendy.fly.others` | `/fly` / `/fly` na innych graczach |
 | `komendy.flyspeed` / `komendy.flyspeed.others` | `/flyspeed` / `/flyspeed` na innych graczach |
 | `komendy.vanish` | `/vanish` |
+| `komendy.vanish.others` | `/vanish` na innych graczach |
 | `komendy.vanish.bypass` | widzenie graczy w vanish |
+| `komendy.god` / `komendy.god.others` | `/god` / `/god` na innych graczach |
 | `komendy.msg` | `/msg` (domyślnie dla wszystkich) |
 | `komendy.r` | `/r` (domyślnie dla wszystkich) |
 | `komendy.repair` | `/repair` |

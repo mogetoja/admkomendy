@@ -34,7 +34,16 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
     @Override
     public void onEnable() {
         vanish = new Vanish(this);
-        if (getCommand("vanish") != null) getCommand("vanish").setExecutor(vanish);
+        if (getCommand("vanish") != null) {
+            getCommand("vanish").setExecutor(vanish);
+            getCommand("vanish").setTabCompleter(vanish);
+        }
+        God god = new God(this, vanish);
+        if (getCommand("god") != null) {
+            getCommand("god").setExecutor(god);
+            getCommand("god").setTabCompleter(god);
+        }
+        getServer().getPluginManager().registerEvents(god, this);
         getServer().getPluginManager().registerEvents(vanish, this);
         vanish.start();
         for (String name : new String[]{"tp", "gm", "fly", "flyspeed", "repair"}) {
@@ -365,7 +374,15 @@ public class Komendy extends JavaPlugin implements CommandExecutor, TabCompleter
             java.util.Map.entry("mute", "mute"),
             java.util.Map.entry("tempmute", "tempmute"),
             java.util.Map.entry("tempmuteip", "tempmuteip"),
-            java.util.Map.entry("unmute", "unmute"));
+            java.util.Map.entry("unmute", "unmute"),
+            java.util.Map.entry("vanish", "vanish"),
+            java.util.Map.entry("v", "vanish"),
+            java.util.Map.entry("evanish", "vanish"),
+            java.util.Map.entry("ev", "vanish"),
+            java.util.Map.entry("god", "god"),
+            java.util.Map.entry("godmode", "god"),
+            java.util.Map.entry("egod", "god"),
+            java.util.Map.entry("egodmode", "god"));
     private static final java.util.Set<String> REPLY_LABELS = java.util.Set.of(
             "r", "reply", "er", "ereply",
             "essentials:r", "essentials:reply", "essentials:er", "essentials:ereply");

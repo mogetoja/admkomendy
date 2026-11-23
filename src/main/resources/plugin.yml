@@ -25,8 +25,12 @@ commands:
     permission: komendy.flyspeed
   vanish:
     description: Calkowicie ukrywa Cie przed innymi graczami
-    usage: /vanish
+    usage: /vanish [nick]
     permission: komendy.vanish
+  god:
+    description: Wlacza lub wylacza tryb niesmiertelnosci
+    usage: /god [nick]
+    permission: komendy.god
   msg:
     description: Wysyla prywatna wiadomosc
     usage: /msg <nick> <wiadomosc>
@@ -104,6 +108,15 @@ permissions:
     default: op
   komendy.vanish:
     description: Uzywanie /vanish
+    default: op
+  komendy.vanish.others:
+    description: /vanish na innych graczach
+    default: op
+  komendy.god:
+    description: Uzywanie /god
+    default: op
+  komendy.god.others:
+    description: /god na innych graczach
     default: op
   komendy.vanish.bypass:
     description: Widzenie graczy w vanish
